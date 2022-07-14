@@ -6,7 +6,7 @@
 	<dict>
 		<key>Headers/MobilogySDK-Swift.h</key>
 		<data>
-		KVmumbSgzNBW57fdfHZexCNnv1c=
+		NzDLgSXcToBCmjzhSBsxfF1OeRk=
 		</data>
 		<key>Headers/MobilogySDK.h</key>
 		<data>
@@ -14,11 +14,11 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		KXuZns4/Ue6XCSjynadj6SCBi1I=
+		lbEKpidV5MehlY6DF+uqLek6leI=
 		</data>
 		<key>Model.momd/Model.mom</key>
 		<data>
-		7SI61RTzbKSDQBi76BFB7I/eIOA=
+		XPNlha2HTfVwRlgc9kCW1w87gnU=
 		</data>
 		<key>Model.momd/VersionInfo.plist</key>
 		<data>
@@ -26,51 +26,27 @@
 		</data>
 		<key>Modules/MobilogySDK.swiftmodule/arm64-apple-ios-simulator.swiftdoc</key>
 		<data>
-		2xX/8RoMHdM0DPqM8JPvuwtZfc4=
+		4uRldhbtjpVhWREeU81sDRcPBb4=
 		</data>
 		<key>Modules/MobilogySDK.swiftmodule/arm64-apple-ios-simulator.swiftinterface</key>
 		<data>
-		JPzd1/qICY7b7+QZhntR1dKYL8U=
+		Ma7bhvMqGiRmdhQ/sd8Pdo0nEx8=
 		</data>
 		<key>Modules/MobilogySDK.swiftmodule/arm64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		7JdZYT658iEnFc8dNuNfXurb/Eo=
-		</data>
-		<key>Modules/MobilogySDK.swiftmodule/arm64.swiftdoc</key>
-		<data>
-		2xX/8RoMHdM0DPqM8JPvuwtZfc4=
-		</data>
-		<key>Modules/MobilogySDK.swiftmodule/arm64.swiftinterface</key>
-		<data>
-		JPzd1/qICY7b7+QZhntR1dKYL8U=
-		</data>
-		<key>Modules/MobilogySDK.swiftmodule/arm64.swiftmodule</key>
-		<data>
-		7JdZYT658iEnFc8dNuNfXurb/Eo=
+		LSt6DjpZvYvbVIN3EhTomITGHq0=
 		</data>
 		<key>Modules/MobilogySDK.swiftmodule/x86_64-apple-ios-simulator.swiftdoc</key>
 		<data>
-		tWCCvvx/BarUUOjqt4UfMebml0Y=
+		KrFUjXtPnVW7Bb+80oIt6iBAMak=
 		</data>
 		<key>Modules/MobilogySDK.swiftmodule/x86_64-apple-ios-simulator.swiftinterface</key>
 		<data>
-		kh0J5ilGvNzkvGlEsTGVrboULnA=
+		cD2fT0o3C0CcR29tjcQw98vClqs=
 		</data>
 		<key>Modules/MobilogySDK.swiftmodule/x86_64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		g0q8ev9StYwQrO/mJ9PaavzdSAM=
-		</data>
-		<key>Modules/MobilogySDK.swiftmodule/x86_64.swiftdoc</key>
-		<data>
-		tWCCvvx/BarUUOjqt4UfMebml0Y=
-		</data>
-		<key>Modules/MobilogySDK.swiftmodule/x86_64.swiftinterface</key>
-		<data>
-		kh0J5ilGvNzkvGlEsTGVrboULnA=
-		</data>
-		<key>Modules/MobilogySDK.swiftmodule/x86_64.swiftmodule</key>
-		<data>
-		g0q8ev9StYwQrO/mJ9PaavzdSAM=
+		/R0I6xsenLT3jznBa3LI1/S/Kn4=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -83,7 +59,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			B/E+t7gvAVvv+xAV7LxlDyejpi4n5BKZ+UFwHKpf6Ms=
+			j00rJuXIEq7Wfkj1HuUdEnTA4a06s4yX+4Nql7UOzm0=
 			</data>
 		</dict>
 		<key>Headers/MobilogySDK.h</key>
@@ -97,7 +73,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			ICNuncXC67DjsTxFFPzKJTu9O3oAhN/dSB25YjS67lM=
+			eWCPrC3ph4i6ntsnJ3L5nzKJqXM3yKJ4OsK+C+4nRU8=
 			</data>
 		</dict>
 		<key>Model.momd/VersionInfo.plist</key>
@@ -111,84 +87,42 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			yxFeqtUB1eo8CifPpHBI56J1fXhVS8bBrCW8knFfU2A=
+			liPdGvp4JWpls2btisEh1ITa3ym7yaHRol7psw1TmSs=
 			</data>
 		</dict>
 		<key>Modules/MobilogySDK.swiftmodule/arm64-apple-ios-simulator.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			CFYZSToKo3C1KRzaEMCdcetyXsQN5eGvsgtYvAnPpGI=
+			8mL7uT2QRh1uB+faLhNtKN3X7BTJH9/KNL9Zqkv0/rk=
 			</data>
 		</dict>
 		<key>Modules/MobilogySDK.swiftmodule/arm64-apple-ios-simulator.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			bHYQcCPRrH1606qMLz2Ss+M0ZH7bgwg+651vX9q6EGM=
-			</data>
-		</dict>
-		<key>Modules/MobilogySDK.swiftmodule/arm64.swiftdoc</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			yxFeqtUB1eo8CifPpHBI56J1fXhVS8bBrCW8knFfU2A=
-			</data>
-		</dict>
-		<key>Modules/MobilogySDK.swiftmodule/arm64.swiftinterface</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			CFYZSToKo3C1KRzaEMCdcetyXsQN5eGvsgtYvAnPpGI=
-			</data>
-		</dict>
-		<key>Modules/MobilogySDK.swiftmodule/arm64.swiftmodule</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			bHYQcCPRrH1606qMLz2Ss+M0ZH7bgwg+651vX9q6EGM=
+			VeiYGZ+avPKYihcwEOE9+D1W5gFEy0kJS61PpbiGFpQ=
 			</data>
 		</dict>
 		<key>Modules/MobilogySDK.swiftmodule/x86_64-apple-ios-simulator.swiftdoc</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			lDUFo5pZq0KitFXi0bXLQusWDb2a1eKwBvsYUTJKXk4=
+			Ob4a2Xr21ASJYelqhXbRXtb3OSM+emRj3hMVrJ+64Yw=
 			</data>
 		</dict>
 		<key>Modules/MobilogySDK.swiftmodule/x86_64-apple-ios-simulator.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			iB8ob9rZlO69KcAS53aDZv8qT1qdyZzq1EhDJU040ys=
+			yAM2m/DK4uZnHUXIULEA51GQSuAHNIOdXl/TtYBDFu0=
 			</data>
 		</dict>
 		<key>Modules/MobilogySDK.swiftmodule/x86_64-apple-ios-simulator.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			XqYSVz08WR/+0EBN8gKVbAVTiTuwdZrBhcTGkhe+xmM=
-			</data>
-		</dict>
-		<key>Modules/MobilogySDK.swiftmodule/x86_64.swiftdoc</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			lDUFo5pZq0KitFXi0bXLQusWDb2a1eKwBvsYUTJKXk4=
-			</data>
-		</dict>
-		<key>Modules/MobilogySDK.swiftmodule/x86_64.swiftinterface</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			iB8ob9rZlO69KcAS53aDZv8qT1qdyZzq1EhDJU040ys=
-			</data>
-		</dict>
-		<key>Modules/MobilogySDK.swiftmodule/x86_64.swiftmodule</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			XqYSVz08WR/+0EBN8gKVbAVTiTuwdZrBhcTGkhe+xmM=
+			1JjP3MffLKJVzq8lzKPqfr373cN2l+DTWgktnW+c+d8=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>
