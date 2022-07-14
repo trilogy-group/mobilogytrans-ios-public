@@ -1,0 +1,11 @@
+framework module MobilogySDK {
+  umbrella header "MobilogySDK.h"
+
+  export *
+  module * { export * }
+}
+
+module MobilogySDK.Swift {
+    header "MobilogySDK-Swift.h"
+    requires objc
+}

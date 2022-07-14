@@ -1,0 +1,1761 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 5.5.2 (swiftlang-1300.0.47.5 clang-1300.0.29.30)
+// swift-module-flags: -target arm64-apple-ios12.0 -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -module-name MobilogySDK
+import AWSAppSync
+import AWSAppSync/*.AWSAPIKeyAuthProvider*/
+import AWSAppSync/*.AWSAppSyncClient*/
+import AWSAppSync/*.AWSAppSyncClientConfiguration*/
+import AWSMobileClient
+import AWSPinpoint
+import AWSS3
+import Amplify
+import AmplifyPlugins
+import AuthenticationServices
+import CommonCrypto
+import Contacts
+import CoreData
+import CryptoSwift
+import EventKit
+import Foundation
+import MobileCoreServices
+@_exported import MobilogySDK
+import Network
+import Photos
+import Swift
+import UIKit
+import UniformTypeIdentifiers
+import _Concurrency
+@_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers public class ContactsStatistics : MobilogySDK.Statistics {
+  public var totalNoOfContacts: Swift.Int
+  public var totalNoOfSuccessContactCount: Swift.Int
+  public var totalNoOfFailedContactCount: Swift.Int
+  @objc deinit
+}
+public struct BackupSettings {
+  public init(doDocumentsBackup: Swift.Bool, doContactsBackup: Swift.Bool, doCalendarsBackup: Swift.Bool, doFilesBackup: Swift.Bool)
+}
+public protocol UploadRepository {
+  func upload(by url: Foundation.URL, progressListener: @escaping MobilogySDK.ProgressListener, uploadListener resultListener: @escaping MobilogySDK.UploadListener)
+}
+public enum AuthProvider {
+  case apple
+  case google
+  public static func == (a: MobilogySDK.AuthProvider, b: MobilogySDK.AuthProvider) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public struct MobilogySDKInitParams {
+  public var passphrase: Swift.String?
+  public let clientKey: Swift.String
+  public init(clientKey: Swift.String)
+}
+public enum ModeOfOperation {
+  case backup
+  case restore(sourceDeviceId: Swift.String)
+  case both(sourceDeviceId: Swift.String)
+  case notEnabled
+}
+public protocol PassphraseRepository {
+  func getKey(completion: @escaping (Swift.String?, Swift.Error?) -> ())
+}
+@_hasMissingDesignatedInitializers public class DownloadServiceWithTransferUtility {
+  @objc deinit
+}
+public enum MobilogySDKErrorCode : Swift.Error {
+  case invalidClientKey
+  case failedToInitializeDatabase
+  case clientKeyIsEmpty
+  case passphraseIsEmpty
+  case missingDevicePermissions
+  case unableToVerifyPassphrase
+  case wrongPassphrase
+  case failedPassphrasePolicy
+  case initializedWithoutPassphrase
+  case loginNotEnabled
+  case authorizationError
+  case failedToDownloadModeOfOperation
+  case modeOfOperationNotSet
+  case invalidModeOfOperation
+  case notConnectedToWifiNetwork
+  case networkTimeout
+  case noIdentityId
+  case wipeOutDataError(error: Swift.Error?)
+  case unknown
+}
+extension MobilogySDK.MobilogySDKErrorCode : Foundation.LocalizedError {
+  public var errorDescription: Swift.String? {
+    get
+  }
+}
+extension MobilogySDK.MobilogySDKErrorCode : Swift.Equatable {
+  public static func == (lhs: MobilogySDK.MobilogySDKErrorCode, rhs: MobilogySDK.MobilogySDKErrorCode) -> Swift.Bool
+}
+public enum OperationStatus : Swift.String {
+  case YET_TO_START
+  case IN_PROGRESS
+  case COMPLETED
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+@_hasMissingDesignatedInitializers public class Statistics {
+  public var totalNoOfFiles: Swift.Int
+  public var lastModifiedDate: Swift.String?
+  public var totalNoOfSuccessFileCount: Swift.Int
+  public var totalNoOfFailedFileCount: Swift.Int
+  public var totalFileSizeProcessed: Swift.UInt64
+  public var errorFiles: [Swift.String]
+  public var status: MobilogySDK.OperationStatus
+  public func toString() -> Swift.String
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers public class MobilogyCloudSDK {
+  public static let shared: MobilogySDK.MobilogyCloudSDK
+  weak public var delegate: MobilogySDK.MobilogySDKDelegate?
+  public static func initialize(params: MobilogySDK.MobilogySDKInitParams, completion: @escaping (Swift.Bool, Swift.Error?) -> ())
+  public func executeAuth(authProvider: MobilogySDK.AuthProvider, window: UIKit.UIWindow, passphrase: Swift.String?)
+  public func executeRestore(isWifiOnly: Swift.Bool, completion: @escaping (Swift.Result<Swift.Void, MobilogySDK.MobilogySDKErrorCode>) -> Swift.Void)
+  public func executeBackup(settings: MobilogySDK.BackupSettings, isWifiOnly: Swift.Bool, completion: @escaping (Swift.Result<Swift.Void, MobilogySDK.MobilogySDKErrorCode>) -> Swift.Void)
+  public func wipeBackupData(completion: @escaping (Swift.Result<Swift.Bool, MobilogySDK.MobilogySDKErrorCode>) -> Swift.Void, lastReadKey: Swift.String?)
+  public func retrieveCurrentStatus() -> MobilogySDK.CategorizedStatistics
+  public func isSignedIn(completion: @escaping (MobilogySDK.ModeOfOperation?, Swift.Error?) -> Swift.Void)
+  public func signOut(_ completion: @escaping (Swift.Bool, Swift.Error?) -> Swift.Void)
+  public func sendEvent(type: MobilogySDK.AnalyticsEventType, params: [MobilogySDK.AnalyticsParameter : Any])
+  public func sendEvent(type: MobilogySDK.AnalyticsEventType, paramsJSON: Swift.String?)
+  @objc deinit
+}
+public enum AnalyticsEventType : Swift.String {
+  case SDKInit
+  case Login
+  case BackupStart
+  case BackupProgress
+  case BackupDone
+  case RestoreStart
+  case RestoreProgress
+  case RestoreDone
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public enum AnalyticsParameter : Swift.String {
+  case ClientID
+  case LoginType
+  case OS
+  case OSVersion
+  case FileType
+  case FileCount
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public typealias ProgressListener = (Foundation.Progress) -> Swift.Void
+public typealias UploadListener = (Swift.Bool, Swift.Error?) -> Swift.Void
+public struct CreateMobilogyUsersInput : AWSAppSync.GraphQLMapConvertible {
+  public var graphQLMap: AWSAppSync.GraphQLMap
+  public init(deviceId: Swift.Optional<Swift.String?> = nil, email: Swift.Optional<Swift.String?> = nil, phoneNumber: Swift.Optional<Swift.String?> = nil, enabled: Swift.Optional<Swift.Bool?> = nil, gsi1Pk: Swift.Optional<Swift.String?> = nil, gsi2Pk: Swift.Optional<Swift.String?> = nil, gsi2Sk: Swift.Optional<Swift.String?> = nil, metadata: Swift.String, os: Swift.Optional<Swift.String?> = nil, registeredDate: Swift.Optional<Swift.String?> = nil, customerInfo: Swift.Optional<Swift.String?> = nil, transferType: Swift.Optional<Swift.String?> = nil, userId: Swift.String)
+  public var deviceId: Swift.Optional<Swift.String?> {
+    get
+    set
+  }
+  public var email: Swift.Optional<Swift.String?> {
+    get
+    set
+  }
+  public var phoneNumber: Swift.Optional<Swift.String?> {
+    get
+    set
+  }
+  public var enabled: Swift.Optional<Swift.Bool?> {
+    get
+    set
+  }
+  public var gsi1Pk: Swift.Optional<Swift.String?> {
+    get
+    set
+  }
+  public var gsi2Pk: Swift.Optional<Swift.String?> {
+    get
+    set
+  }
+  public var gsi2Sk: Swift.Optional<Swift.String?> {
+    get
+    set
+  }
+  public var metadata: Swift.String {
+    get
+    set
+  }
+  public var os: Swift.Optional<Swift.String?> {
+    get
+    set
+  }
+  public var registeredDate: Swift.Optional<Swift.String?> {
+    get
+    set
+  }
+  public var customerInfo: Swift.Optional<Swift.String?> {
+    get
+    set
+  }
+  public var transferType: Swift.Optional<Swift.String?> {
+    get
+    set
+  }
+  public var userId: Swift.String {
+    get
+    set
+  }
+}
+public struct DeleteMobilogyUsersInput : AWSAppSync.GraphQLMapConvertible {
+  public var graphQLMap: AWSAppSync.GraphQLMap
+  public init(metadata: Swift.String, userId: Swift.String)
+  public var metadata: Swift.String {
+    get
+    set
+  }
+  public var userId: Swift.String {
+    get
+    set
+  }
+}
+public struct UpdateMobilogyUsersInput : AWSAppSync.GraphQLMapConvertible {
+  public var graphQLMap: AWSAppSync.GraphQLMap
+  public init(deviceId: Swift.Optional<Swift.String?> = nil, email: Swift.Optional<Swift.String?> = nil, enabled: Swift.Optional<Swift.Bool?> = nil, gsi1Pk: Swift.Optional<Swift.String?> = nil, metadata: Swift.String, os: Swift.Optional<Swift.String?> = nil, registeredDate: Swift.Optional<Swift.String?> = nil, userId: Swift.String)
+  public var deviceId: Swift.Optional<Swift.String?> {
+    get
+    set
+  }
+  public var email: Swift.Optional<Swift.String?> {
+    get
+    set
+  }
+  public var enabled: Swift.Optional<Swift.Bool?> {
+    get
+    set
+  }
+  public var gsi1Pk: Swift.Optional<Swift.String?> {
+    get
+    set
+  }
+  public var metadata: Swift.String {
+    get
+    set
+  }
+  public var os: Swift.Optional<Swift.String?> {
+    get
+    set
+  }
+  public var registeredDate: Swift.Optional<Swift.String?> {
+    get
+    set
+  }
+  public var userId: Swift.String {
+    get
+    set
+  }
+}
+public struct CreateMobilogySPConfigInput : AWSAppSync.GraphQLMapConvertible {
+  public var graphQLMap: AWSAppSync.GraphQLMap
+  public init(authKey: Swift.Optional<Swift.String?> = nil, config: Swift.Optional<Swift.String?> = nil, enabled: Swift.Optional<Swift.Bool?> = nil, gsi1Pk: Swift.Optional<Swift.String?> = nil, registeredDate: Swift.Optional<Swift.String?> = nil, spId: Swift.String)
+  public var authKey: Swift.Optional<Swift.String?> {
+    get
+    set
+  }
+  public var config: Swift.Optional<Swift.String?> {
+    get
+    set
+  }
+  public var enabled: Swift.Optional<Swift.Bool?> {
+    get
+    set
+  }
+  public var gsi1Pk: Swift.Optional<Swift.String?> {
+    get
+    set
+  }
+  public var registeredDate: Swift.Optional<Swift.String?> {
+    get
+    set
+  }
+  public var spId: Swift.String {
+    get
+    set
+  }
+}
+public struct UpdateMobilogySPConfigInput : AWSAppSync.GraphQLMapConvertible {
+  public var graphQLMap: AWSAppSync.GraphQLMap
+  public init(config: Swift.Optional<Swift.String?> = nil, enabled: Swift.Optional<Swift.Bool?> = nil, gsi1Pk: Swift.Optional<Swift.String?> = nil, registeredDate: Swift.Optional<Swift.String?> = nil, spId: Swift.String)
+  public var config: Swift.Optional<Swift.String?> {
+    get
+    set
+  }
+  public var enabled: Swift.Optional<Swift.Bool?> {
+    get
+    set
+  }
+  public var gsi1Pk: Swift.Optional<Swift.String?> {
+    get
+    set
+  }
+  public var registeredDate: Swift.Optional<Swift.String?> {
+    get
+    set
+  }
+  public var spId: Swift.String {
+    get
+    set
+  }
+}
+public struct DeleteMobilogySPConfigInput : AWSAppSync.GraphQLMapConvertible {
+  public var graphQLMap: AWSAppSync.GraphQLMap
+  public init(spId: Swift.String)
+  public var spId: Swift.String {
+    get
+    set
+  }
+}
+public struct TableMobilogyUsersFilterInput : AWSAppSync.GraphQLMapConvertible {
+  public var graphQLMap: AWSAppSync.GraphQLMap
+  public init(email: Swift.Optional<MobilogySDK.TableStringFilterInput?> = nil, enabled: Swift.Optional<MobilogySDK.TableBooleanFilterInput?> = nil, gsi1Pk: Swift.Optional<MobilogySDK.TableStringFilterInput?> = nil, metadata: Swift.Optional<MobilogySDK.TableStringFilterInput?> = nil, userId: Swift.Optional<MobilogySDK.TableStringFilterInput?> = nil)
+  public var email: Swift.Optional<MobilogySDK.TableStringFilterInput?> {
+    get
+    set
+  }
+  public var enabled: Swift.Optional<MobilogySDK.TableBooleanFilterInput?> {
+    get
+    set
+  }
+  public var gsi1Pk: Swift.Optional<MobilogySDK.TableStringFilterInput?> {
+    get
+    set
+  }
+  public var metadata: Swift.Optional<MobilogySDK.TableStringFilterInput?> {
+    get
+    set
+  }
+  public var userId: Swift.Optional<MobilogySDK.TableStringFilterInput?> {
+    get
+    set
+  }
+}
+public struct TableStringFilterInput : AWSAppSync.GraphQLMapConvertible {
+  public var graphQLMap: AWSAppSync.GraphQLMap
+  public init(beginsWith: Swift.Optional<Swift.String?> = nil, between: Swift.Optional<[Swift.String?]?> = nil, contains: Swift.Optional<Swift.String?> = nil, eq: Swift.Optional<Swift.String?> = nil, ge: Swift.Optional<Swift.String?> = nil, gt: Swift.Optional<Swift.String?> = nil, le: Swift.Optional<Swift.String?> = nil, lt: Swift.Optional<Swift.String?> = nil, ne: Swift.Optional<Swift.String?> = nil, notContains: Swift.Optional<Swift.String?> = nil)
+  public var beginsWith: Swift.Optional<Swift.String?> {
+    get
+    set
+  }
+  public var between: Swift.Optional<[Swift.String?]?> {
+    get
+    set
+  }
+  public var contains: Swift.Optional<Swift.String?> {
+    get
+    set
+  }
+  public var eq: Swift.Optional<Swift.String?> {
+    get
+    set
+  }
+  public var ge: Swift.Optional<Swift.String?> {
+    get
+    set
+  }
+  public var gt: Swift.Optional<Swift.String?> {
+    get
+    set
+  }
+  public var le: Swift.Optional<Swift.String?> {
+    get
+    set
+  }
+  public var lt: Swift.Optional<Swift.String?> {
+    get
+    set
+  }
+  public var ne: Swift.Optional<Swift.String?> {
+    get
+    set
+  }
+  public var notContains: Swift.Optional<Swift.String?> {
+    get
+    set
+  }
+}
+public struct TableBooleanFilterInput : AWSAppSync.GraphQLMapConvertible {
+  public var graphQLMap: AWSAppSync.GraphQLMap
+  public init(eq: Swift.Optional<Swift.Bool?> = nil, ne: Swift.Optional<Swift.Bool?> = nil)
+  public var eq: Swift.Optional<Swift.Bool?> {
+    get
+    set
+  }
+  public var ne: Swift.Optional<Swift.Bool?> {
+    get
+    set
+  }
+}
+public struct TableMobilogySPConfigFilterInput : AWSAppSync.GraphQLMapConvertible {
+  public var graphQLMap: AWSAppSync.GraphQLMap
+  public init(gsi1Pk: Swift.Optional<MobilogySDK.TableStringFilterInput?> = nil, spId: Swift.Optional<MobilogySDK.TableStringFilterInput?> = nil)
+  public var gsi1Pk: Swift.Optional<MobilogySDK.TableStringFilterInput?> {
+    get
+    set
+  }
+  public var spId: Swift.Optional<MobilogySDK.TableStringFilterInput?> {
+    get
+    set
+  }
+}
+final public class CreateMobilogyUsersMutation : AWSAppSync.GraphQLMutation {
+  public static let operationString: Swift.String
+  final public var input: MobilogySDK.CreateMobilogyUsersInput
+  public init(input: MobilogySDK.CreateMobilogyUsersInput)
+  final public var variables: AWSAppSync.GraphQLMap? {
+    get
+  }
+  public struct Data : AWSAppSync.GraphQLSelectionSet {
+    public static let possibleTypes: [Swift.String]
+    public static let selections: [AWSAppSync.GraphQLSelection]
+    public var snapshot: AWSAppSync.Snapshot
+    public init(snapshot: AWSAppSync.Snapshot)
+    public init(createMobilogyUsers: MobilogySDK.CreateMobilogyUsersMutation.Data.CreateMobilogyUser? = nil)
+    public var createMobilogyUsers: MobilogySDK.CreateMobilogyUsersMutation.Data.CreateMobilogyUser? {
+      get
+      set
+    }
+    public struct CreateMobilogyUser : AWSAppSync.GraphQLSelectionSet {
+      public static let possibleTypes: [Swift.String]
+      public static let selections: [AWSAppSync.GraphQLSelection]
+      public var snapshot: AWSAppSync.Snapshot
+      public init(snapshot: AWSAppSync.Snapshot)
+      public init(deviceId: Swift.String? = nil, email: Swift.String? = nil, phoneNumber: Swift.String? = nil, enabled: Swift.Bool? = nil, gsi1Pk: Swift.String? = nil, gsi2Pk: Swift.String? = nil, gsi2Sk: Swift.String? = nil, metadata: Swift.String, os: Swift.String? = nil, registeredDate: Swift.String? = nil, userId: Swift.String)
+      public var __typename: Swift.String {
+        get
+        set
+      }
+      public var deviceId: Swift.String? {
+        get
+        set
+      }
+      public var email: Swift.String? {
+        get
+        set
+      }
+      public var phoneNumber: Swift.String? {
+        get
+        set
+      }
+      public var enabled: Swift.Bool? {
+        get
+        set
+      }
+      public var gsi1Pk: Swift.String? {
+        get
+        set
+      }
+      public var gsi2Pk: Swift.String? {
+        get
+        set
+      }
+      public var gsi2Sk: Swift.String? {
+        get
+        set
+      }
+      public var metadata: Swift.String {
+        get
+        set
+      }
+      public var os: Swift.String? {
+        get
+        set
+      }
+      public var registeredDate: Swift.String? {
+        get
+        set
+      }
+      public var userId: Swift.String {
+        get
+        set
+      }
+    }
+  }
+  @objc deinit
+}
+final public class DeleteMobilogyUsersMutation : AWSAppSync.GraphQLMutation {
+  public static let operationString: Swift.String
+  final public var input: MobilogySDK.DeleteMobilogyUsersInput
+  public init(input: MobilogySDK.DeleteMobilogyUsersInput)
+  final public var variables: AWSAppSync.GraphQLMap? {
+    get
+  }
+  public struct Data : AWSAppSync.GraphQLSelectionSet {
+    public static let possibleTypes: [Swift.String]
+    public static let selections: [AWSAppSync.GraphQLSelection]
+    public var snapshot: AWSAppSync.Snapshot
+    public init(snapshot: AWSAppSync.Snapshot)
+    public init(deleteMobilogyUsers: MobilogySDK.DeleteMobilogyUsersMutation.Data.DeleteMobilogyUser? = nil)
+    public var deleteMobilogyUsers: MobilogySDK.DeleteMobilogyUsersMutation.Data.DeleteMobilogyUser? {
+      get
+      set
+    }
+    public struct DeleteMobilogyUser : AWSAppSync.GraphQLSelectionSet {
+      public static let possibleTypes: [Swift.String]
+      public static let selections: [AWSAppSync.GraphQLSelection]
+      public var snapshot: AWSAppSync.Snapshot
+      public init(snapshot: AWSAppSync.Snapshot)
+      public init(deviceId: Swift.String? = nil, email: Swift.String? = nil, enabled: Swift.Bool? = nil, gsi1Pk: Swift.String? = nil, metadata: Swift.String, os: Swift.String? = nil, registeredDate: Swift.String? = nil, userId: Swift.String)
+      public var __typename: Swift.String {
+        get
+        set
+      }
+      public var deviceId: Swift.String? {
+        get
+        set
+      }
+      public var email: Swift.String? {
+        get
+        set
+      }
+      public var enabled: Swift.Bool? {
+        get
+        set
+      }
+      public var gsi1Pk: Swift.String? {
+        get
+        set
+      }
+      public var metadata: Swift.String {
+        get
+        set
+      }
+      public var os: Swift.String? {
+        get
+        set
+      }
+      public var registeredDate: Swift.String? {
+        get
+        set
+      }
+      public var userId: Swift.String {
+        get
+        set
+      }
+    }
+  }
+  @objc deinit
+}
+final public class UpdateMobilogyUsersMutation : AWSAppSync.GraphQLMutation {
+  public static let operationString: Swift.String
+  final public var input: MobilogySDK.UpdateMobilogyUsersInput
+  public init(input: MobilogySDK.UpdateMobilogyUsersInput)
+  final public var variables: AWSAppSync.GraphQLMap? {
+    get
+  }
+  public struct Data : AWSAppSync.GraphQLSelectionSet {
+    public static let possibleTypes: [Swift.String]
+    public static let selections: [AWSAppSync.GraphQLSelection]
+    public var snapshot: AWSAppSync.Snapshot
+    public init(snapshot: AWSAppSync.Snapshot)
+    public init(updateMobilogyUsers: MobilogySDK.UpdateMobilogyUsersMutation.Data.UpdateMobilogyUser? = nil)
+    public var updateMobilogyUsers: MobilogySDK.UpdateMobilogyUsersMutation.Data.UpdateMobilogyUser? {
+      get
+      set
+    }
+    public struct UpdateMobilogyUser : AWSAppSync.GraphQLSelectionSet {
+      public static let possibleTypes: [Swift.String]
+      public static let selections: [AWSAppSync.GraphQLSelection]
+      public var snapshot: AWSAppSync.Snapshot
+      public init(snapshot: AWSAppSync.Snapshot)
+      public init(deviceId: Swift.String? = nil, email: Swift.String? = nil, enabled: Swift.Bool? = nil, gsi1Pk: Swift.String? = nil, metadata: Swift.String, os: Swift.String? = nil, registeredDate: Swift.String? = nil, userId: Swift.String)
+      public var __typename: Swift.String {
+        get
+        set
+      }
+      public var deviceId: Swift.String? {
+        get
+        set
+      }
+      public var email: Swift.String? {
+        get
+        set
+      }
+      public var enabled: Swift.Bool? {
+        get
+        set
+      }
+      public var gsi1Pk: Swift.String? {
+        get
+        set
+      }
+      public var metadata: Swift.String {
+        get
+        set
+      }
+      public var os: Swift.String? {
+        get
+        set
+      }
+      public var registeredDate: Swift.String? {
+        get
+        set
+      }
+      public var userId: Swift.String {
+        get
+        set
+      }
+    }
+  }
+  @objc deinit
+}
+final public class CreateMobilogySpConfigMutation : AWSAppSync.GraphQLMutation {
+  public static let operationString: Swift.String
+  final public var input: MobilogySDK.CreateMobilogySPConfigInput
+  public init(input: MobilogySDK.CreateMobilogySPConfigInput)
+  final public var variables: AWSAppSync.GraphQLMap? {
+    get
+  }
+  public struct Data : AWSAppSync.GraphQLSelectionSet {
+    public static let possibleTypes: [Swift.String]
+    public static let selections: [AWSAppSync.GraphQLSelection]
+    public var snapshot: AWSAppSync.Snapshot
+    public init(snapshot: AWSAppSync.Snapshot)
+    public init(createMobilogySpConfig: MobilogySDK.CreateMobilogySpConfigMutation.Data.CreateMobilogySpConfig? = nil)
+    public var createMobilogySpConfig: MobilogySDK.CreateMobilogySpConfigMutation.Data.CreateMobilogySpConfig? {
+      get
+      set
+    }
+    public struct CreateMobilogySpConfig : AWSAppSync.GraphQLSelectionSet {
+      public static let possibleTypes: [Swift.String]
+      public static let selections: [AWSAppSync.GraphQLSelection]
+      public var snapshot: AWSAppSync.Snapshot
+      public init(snapshot: AWSAppSync.Snapshot)
+      public init(config: Swift.String? = nil, enabled: Swift.Bool? = nil, gsi1Pk: Swift.String? = nil, registeredDate: Swift.String? = nil, spId: Swift.String)
+      public var __typename: Swift.String {
+        get
+        set
+      }
+      public var config: Swift.String? {
+        get
+        set
+      }
+      public var enabled: Swift.Bool? {
+        get
+        set
+      }
+      public var gsi1Pk: Swift.String? {
+        get
+        set
+      }
+      public var registeredDate: Swift.String? {
+        get
+        set
+      }
+      public var spId: Swift.String {
+        get
+        set
+      }
+    }
+  }
+  @objc deinit
+}
+final public class UpdateMobilogySpConfigMutation : AWSAppSync.GraphQLMutation {
+  public static let operationString: Swift.String
+  final public var input: MobilogySDK.UpdateMobilogySPConfigInput
+  public init(input: MobilogySDK.UpdateMobilogySPConfigInput)
+  final public var variables: AWSAppSync.GraphQLMap? {
+    get
+  }
+  public struct Data : AWSAppSync.GraphQLSelectionSet {
+    public static let possibleTypes: [Swift.String]
+    public static let selections: [AWSAppSync.GraphQLSelection]
+    public var snapshot: AWSAppSync.Snapshot
+    public init(snapshot: AWSAppSync.Snapshot)
+    public init(updateMobilogySpConfig: MobilogySDK.UpdateMobilogySpConfigMutation.Data.UpdateMobilogySpConfig? = nil)
+    public var updateMobilogySpConfig: MobilogySDK.UpdateMobilogySpConfigMutation.Data.UpdateMobilogySpConfig? {
+      get
+      set
+    }
+    public struct UpdateMobilogySpConfig : AWSAppSync.GraphQLSelectionSet {
+      public static let possibleTypes: [Swift.String]
+      public static let selections: [AWSAppSync.GraphQLSelection]
+      public var snapshot: AWSAppSync.Snapshot
+      public init(snapshot: AWSAppSync.Snapshot)
+      public init(config: Swift.String? = nil, enabled: Swift.Bool? = nil, gsi1Pk: Swift.String? = nil, registeredDate: Swift.String? = nil, spId: Swift.String)
+      public var __typename: Swift.String {
+        get
+        set
+      }
+      public var config: Swift.String? {
+        get
+        set
+      }
+      public var enabled: Swift.Bool? {
+        get
+        set
+      }
+      public var gsi1Pk: Swift.String? {
+        get
+        set
+      }
+      public var registeredDate: Swift.String? {
+        get
+        set
+      }
+      public var spId: Swift.String {
+        get
+        set
+      }
+    }
+  }
+  @objc deinit
+}
+final public class DeleteMobilogySpConfigMutation : AWSAppSync.GraphQLMutation {
+  public static let operationString: Swift.String
+  final public var input: MobilogySDK.DeleteMobilogySPConfigInput
+  public init(input: MobilogySDK.DeleteMobilogySPConfigInput)
+  final public var variables: AWSAppSync.GraphQLMap? {
+    get
+  }
+  public struct Data : AWSAppSync.GraphQLSelectionSet {
+    public static let possibleTypes: [Swift.String]
+    public static let selections: [AWSAppSync.GraphQLSelection]
+    public var snapshot: AWSAppSync.Snapshot
+    public init(snapshot: AWSAppSync.Snapshot)
+    public init(deleteMobilogySpConfig: MobilogySDK.DeleteMobilogySpConfigMutation.Data.DeleteMobilogySpConfig? = nil)
+    public var deleteMobilogySpConfig: MobilogySDK.DeleteMobilogySpConfigMutation.Data.DeleteMobilogySpConfig? {
+      get
+      set
+    }
+    public struct DeleteMobilogySpConfig : AWSAppSync.GraphQLSelectionSet {
+      public static let possibleTypes: [Swift.String]
+      public static let selections: [AWSAppSync.GraphQLSelection]
+      public var snapshot: AWSAppSync.Snapshot
+      public init(snapshot: AWSAppSync.Snapshot)
+      public init(config: Swift.String? = nil, enabled: Swift.Bool? = nil, gsi1Pk: Swift.String? = nil, registeredDate: Swift.String? = nil, spId: Swift.String)
+      public var __typename: Swift.String {
+        get
+        set
+      }
+      public var config: Swift.String? {
+        get
+        set
+      }
+      public var enabled: Swift.Bool? {
+        get
+        set
+      }
+      public var gsi1Pk: Swift.String? {
+        get
+        set
+      }
+      public var registeredDate: Swift.String? {
+        get
+        set
+      }
+      public var spId: Swift.String {
+        get
+        set
+      }
+    }
+  }
+  @objc deinit
+}
+final public class GetMobilogyUsersQuery : AWSAppSync.GraphQLQuery {
+  public static let operationString: Swift.String
+  final public var metadata: Swift.String
+  final public var userId: Swift.String
+  public init(metadata: Swift.String, userId: Swift.String)
+  final public var variables: AWSAppSync.GraphQLMap? {
+    get
+  }
+  public struct Data : AWSAppSync.GraphQLSelectionSet {
+    public static let possibleTypes: [Swift.String]
+    public static let selections: [AWSAppSync.GraphQLSelection]
+    public var snapshot: AWSAppSync.Snapshot
+    public init(snapshot: AWSAppSync.Snapshot)
+    public init(getMobilogyUsers: MobilogySDK.GetMobilogyUsersQuery.Data.GetMobilogyUser? = nil)
+    public var getMobilogyUsers: MobilogySDK.GetMobilogyUsersQuery.Data.GetMobilogyUser? {
+      get
+      set
+    }
+    public struct GetMobilogyUser : AWSAppSync.GraphQLSelectionSet {
+      public static let possibleTypes: [Swift.String]
+      public static let selections: [AWSAppSync.GraphQLSelection]
+      public var snapshot: AWSAppSync.Snapshot
+      public init(snapshot: AWSAppSync.Snapshot)
+      public init(deviceId: Swift.String? = nil, email: Swift.String? = nil, enabled: Swift.Bool? = nil, gsi1Pk: Swift.String? = nil, metadata: Swift.String, os: Swift.String? = nil, registeredDate: Swift.String? = nil, userId: Swift.String)
+      public var __typename: Swift.String {
+        get
+        set
+      }
+      public var deviceId: Swift.String? {
+        get
+        set
+      }
+      public var email: Swift.String? {
+        get
+        set
+      }
+      public var enabled: Swift.Bool? {
+        get
+        set
+      }
+      public var gsi1Pk: Swift.String? {
+        get
+        set
+      }
+      public var metadata: Swift.String {
+        get
+        set
+      }
+      public var os: Swift.String? {
+        get
+        set
+      }
+      public var registeredDate: Swift.String? {
+        get
+        set
+      }
+      public var userId: Swift.String {
+        get
+        set
+      }
+    }
+  }
+  @objc deinit
+}
+final public class ListMobilogyUsersDevicesQuery : AWSAppSync.GraphQLQuery {
+  public static let operationString: Swift.String
+  final public var metadata: Swift.String
+  final public var userId: Swift.String
+  public init(metadata: Swift.String, userId: Swift.String)
+  final public var variables: AWSAppSync.GraphQLMap? {
+    get
+  }
+  public struct Data : AWSAppSync.GraphQLSelectionSet {
+    public static let possibleTypes: [Swift.String]
+    public static let selections: [AWSAppSync.GraphQLSelection]
+    public var snapshot: AWSAppSync.Snapshot
+    public init(snapshot: AWSAppSync.Snapshot)
+    public init(listMobilogyUsersDevices: MobilogySDK.ListMobilogyUsersDevicesQuery.Data.ListMobilogyUsersDevice? = nil)
+    public var listMobilogyUsersDevices: MobilogySDK.ListMobilogyUsersDevicesQuery.Data.ListMobilogyUsersDevice? {
+      get
+      set
+    }
+    public struct ListMobilogyUsersDevice : AWSAppSync.GraphQLSelectionSet {
+      public static let possibleTypes: [Swift.String]
+      public static let selections: [AWSAppSync.GraphQLSelection]
+      public var snapshot: AWSAppSync.Snapshot
+      public init(snapshot: AWSAppSync.Snapshot)
+      public init(items: [MobilogySDK.ListMobilogyUsersDevicesQuery.Data.ListMobilogyUsersDevice.Item?]? = nil, nextToken: Swift.String? = nil)
+      public var __typename: Swift.String {
+        get
+        set
+      }
+      public var items: [MobilogySDK.ListMobilogyUsersDevicesQuery.Data.ListMobilogyUsersDevice.Item?]? {
+        get
+        set
+      }
+      public var nextToken: Swift.String? {
+        get
+        set
+      }
+      public struct Item : AWSAppSync.GraphQLSelectionSet {
+        public static let possibleTypes: [Swift.String]
+        public static let selections: [AWSAppSync.GraphQLSelection]
+        public var snapshot: AWSAppSync.Snapshot
+        public init(snapshot: AWSAppSync.Snapshot)
+        public init(deviceId: Swift.String? = nil, email: Swift.String? = nil, phoneNumber: Swift.String? = nil, enabled: Swift.Bool? = nil, gsi1Pk: Swift.String? = nil, metadata: Swift.String, os: Swift.String? = nil, registeredDate: Swift.String? = nil, transferType: Swift.String? = nil, userId: Swift.String, gsi2Pk: Swift.String? = nil, gsi2Sk: Swift.String? = nil)
+        public var __typename: Swift.String {
+          get
+          set
+        }
+        public var deviceId: Swift.String? {
+          get
+          set
+        }
+        public var email: Swift.String? {
+          get
+          set
+        }
+        public var phoneNumber: Swift.String? {
+          get
+          set
+        }
+        public var enabled: Swift.Bool? {
+          get
+          set
+        }
+        public var gsi1Pk: Swift.String? {
+          get
+          set
+        }
+        public var metadata: Swift.String {
+          get
+          set
+        }
+        public var os: Swift.String? {
+          get
+          set
+        }
+        public var registeredDate: Swift.String? {
+          get
+          set
+        }
+        public var transferType: Swift.String? {
+          get
+          set
+        }
+        public var userId: Swift.String {
+          get
+          set
+        }
+        public var gsi2Pk: Swift.String? {
+          get
+          set
+        }
+        public var gsi2Sk: Swift.String? {
+          get
+          set
+        }
+      }
+    }
+  }
+  @objc deinit
+}
+final public class ListMobilogyUsersQuery : AWSAppSync.GraphQLQuery {
+  public static let operationString: Swift.String
+  final public var filter: MobilogySDK.TableMobilogyUsersFilterInput?
+  final public var limit: Swift.Int?
+  final public var nextToken: Swift.String?
+  public init(filter: MobilogySDK.TableMobilogyUsersFilterInput? = nil, limit: Swift.Int? = nil, nextToken: Swift.String? = nil)
+  final public var variables: AWSAppSync.GraphQLMap? {
+    get
+  }
+  public struct Data : AWSAppSync.GraphQLSelectionSet {
+    public static let possibleTypes: [Swift.String]
+    public static let selections: [AWSAppSync.GraphQLSelection]
+    public var snapshot: AWSAppSync.Snapshot
+    public init(snapshot: AWSAppSync.Snapshot)
+    public init(listMobilogyUsers: MobilogySDK.ListMobilogyUsersQuery.Data.ListMobilogyUser? = nil)
+    public var listMobilogyUsers: MobilogySDK.ListMobilogyUsersQuery.Data.ListMobilogyUser? {
+      get
+      set
+    }
+    public struct ListMobilogyUser : AWSAppSync.GraphQLSelectionSet {
+      public static let possibleTypes: [Swift.String]
+      public static let selections: [AWSAppSync.GraphQLSelection]
+      public var snapshot: AWSAppSync.Snapshot
+      public init(snapshot: AWSAppSync.Snapshot)
+      public init(items: [MobilogySDK.ListMobilogyUsersQuery.Data.ListMobilogyUser.Item?]? = nil, nextToken: Swift.String? = nil)
+      public var __typename: Swift.String {
+        get
+        set
+      }
+      public var items: [MobilogySDK.ListMobilogyUsersQuery.Data.ListMobilogyUser.Item?]? {
+        get
+        set
+      }
+      public var nextToken: Swift.String? {
+        get
+        set
+      }
+      public struct Item : AWSAppSync.GraphQLSelectionSet {
+        public static let possibleTypes: [Swift.String]
+        public static let selections: [AWSAppSync.GraphQLSelection]
+        public var snapshot: AWSAppSync.Snapshot
+        public init(snapshot: AWSAppSync.Snapshot)
+        public init(deviceId: Swift.String? = nil, email: Swift.String? = nil, enabled: Swift.Bool? = nil, gsi1Pk: Swift.String? = nil, metadata: Swift.String, os: Swift.String? = nil, registeredDate: Swift.String? = nil, userId: Swift.String)
+        public var __typename: Swift.String {
+          get
+          set
+        }
+        public var deviceId: Swift.String? {
+          get
+          set
+        }
+        public var email: Swift.String? {
+          get
+          set
+        }
+        public var enabled: Swift.Bool? {
+          get
+          set
+        }
+        public var gsi1Pk: Swift.String? {
+          get
+          set
+        }
+        public var metadata: Swift.String {
+          get
+          set
+        }
+        public var os: Swift.String? {
+          get
+          set
+        }
+        public var registeredDate: Swift.String? {
+          get
+          set
+        }
+        public var userId: Swift.String {
+          get
+          set
+        }
+      }
+    }
+  }
+  @objc deinit
+}
+final public class QueryMobilogyUsersBySearchByEmailQuery : AWSAppSync.GraphQLQuery {
+  public static let operationString: Swift.String
+  final public var gSI1PK: Swift.String
+  final public var after: Swift.String?
+  final public var first: Swift.Int?
+  public init(gSI1PK: Swift.String, after: Swift.String? = nil, first: Swift.Int? = nil)
+  final public var variables: AWSAppSync.GraphQLMap? {
+    get
+  }
+  public struct Data : AWSAppSync.GraphQLSelectionSet {
+    public static let possibleTypes: [Swift.String]
+    public static let selections: [AWSAppSync.GraphQLSelection]
+    public var snapshot: AWSAppSync.Snapshot
+    public init(snapshot: AWSAppSync.Snapshot)
+    public init(queryMobilogyUsersBySearchByEmail: MobilogySDK.QueryMobilogyUsersBySearchByEmailQuery.Data.QueryMobilogyUsersBySearchByEmail? = nil)
+    public var queryMobilogyUsersBySearchByEmail: MobilogySDK.QueryMobilogyUsersBySearchByEmailQuery.Data.QueryMobilogyUsersBySearchByEmail? {
+      get
+      set
+    }
+    public struct QueryMobilogyUsersBySearchByEmail : AWSAppSync.GraphQLSelectionSet {
+      public static let possibleTypes: [Swift.String]
+      public static let selections: [AWSAppSync.GraphQLSelection]
+      public var snapshot: AWSAppSync.Snapshot
+      public init(snapshot: AWSAppSync.Snapshot)
+      public init(items: [MobilogySDK.QueryMobilogyUsersBySearchByEmailQuery.Data.QueryMobilogyUsersBySearchByEmail.Item?]? = nil, nextToken: Swift.String? = nil)
+      public var __typename: Swift.String {
+        get
+        set
+      }
+      public var items: [MobilogySDK.QueryMobilogyUsersBySearchByEmailQuery.Data.QueryMobilogyUsersBySearchByEmail.Item?]? {
+        get
+        set
+      }
+      public var nextToken: Swift.String? {
+        get
+        set
+      }
+      public struct Item : AWSAppSync.GraphQLSelectionSet {
+        public static let possibleTypes: [Swift.String]
+        public static let selections: [AWSAppSync.GraphQLSelection]
+        public var snapshot: AWSAppSync.Snapshot
+        public init(snapshot: AWSAppSync.Snapshot)
+        public init(deviceId: Swift.String? = nil, email: Swift.String? = nil, enabled: Swift.Bool? = nil, gsi1Pk: Swift.String? = nil, metadata: Swift.String, os: Swift.String? = nil, registeredDate: Swift.String? = nil, userId: Swift.String)
+        public var __typename: Swift.String {
+          get
+          set
+        }
+        public var deviceId: Swift.String? {
+          get
+          set
+        }
+        public var email: Swift.String? {
+          get
+          set
+        }
+        public var enabled: Swift.Bool? {
+          get
+          set
+        }
+        public var gsi1Pk: Swift.String? {
+          get
+          set
+        }
+        public var metadata: Swift.String {
+          get
+          set
+        }
+        public var os: Swift.String? {
+          get
+          set
+        }
+        public var registeredDate: Swift.String? {
+          get
+          set
+        }
+        public var userId: Swift.String {
+          get
+          set
+        }
+      }
+    }
+  }
+  @objc deinit
+}
+final public class GetMobilogySpConfigQuery : AWSAppSync.GraphQLQuery {
+  public static let operationString: Swift.String
+  final public var SPId: Swift.String
+  public init(SPId: Swift.String)
+  final public var variables: AWSAppSync.GraphQLMap? {
+    get
+  }
+  public struct Data : AWSAppSync.GraphQLSelectionSet {
+    public static let possibleTypes: [Swift.String]
+    public static let selections: [AWSAppSync.GraphQLSelection]
+    public var snapshot: AWSAppSync.Snapshot
+    public init(snapshot: AWSAppSync.Snapshot)
+    public init(getMobilogySpConfig: MobilogySDK.GetMobilogySpConfigQuery.Data.GetMobilogySpConfig? = nil)
+    public var getMobilogySpConfig: MobilogySDK.GetMobilogySpConfigQuery.Data.GetMobilogySpConfig? {
+      get
+      set
+    }
+    public struct GetMobilogySpConfig : AWSAppSync.GraphQLSelectionSet {
+      public static let possibleTypes: [Swift.String]
+      public static let selections: [AWSAppSync.GraphQLSelection]
+      public var snapshot: AWSAppSync.Snapshot
+      public init(snapshot: AWSAppSync.Snapshot)
+      public init(config: Swift.String? = nil, enabled: Swift.Bool? = nil, gsi1Pk: Swift.String? = nil, registeredDate: Swift.String? = nil, spId: Swift.String)
+      public var __typename: Swift.String {
+        get
+        set
+      }
+      public var config: Swift.String? {
+        get
+        set
+      }
+      public var enabled: Swift.Bool? {
+        get
+        set
+      }
+      public var gsi1Pk: Swift.String? {
+        get
+        set
+      }
+      public var registeredDate: Swift.String? {
+        get
+        set
+      }
+      public var spId: Swift.String {
+        get
+        set
+      }
+    }
+  }
+  @objc deinit
+}
+final public class GetMobilogyManagementUserQuery : AWSAppSync.GraphQLQuery {
+  public static let operationString: Swift.String
+  final public var userId: Swift.String
+  final public var spId: Swift.String
+  public init(userId: Swift.String, spId: Swift.String)
+  final public var variables: AWSAppSync.GraphQLMap? {
+    get
+  }
+  public struct Data : AWSAppSync.GraphQLSelectionSet {
+    public static let possibleTypes: [Swift.String]
+    public static let selections: [AWSAppSync.GraphQLSelection]
+    public var snapshot: AWSAppSync.Snapshot
+    public init(snapshot: AWSAppSync.Snapshot)
+    public init(getMobilogyManagementUser: Swift.String? = nil)
+    public var getMobilogyManagementUser: Swift.String? {
+      get
+      set
+    }
+  }
+  @objc deinit
+}
+final public class ListMobilogySpConfigsQuery : AWSAppSync.GraphQLQuery {
+  public static let operationString: Swift.String
+  final public var filter: MobilogySDK.TableMobilogySPConfigFilterInput?
+  final public var limit: Swift.Int?
+  final public var nextToken: Swift.String?
+  public init(filter: MobilogySDK.TableMobilogySPConfigFilterInput? = nil, limit: Swift.Int? = nil, nextToken: Swift.String? = nil)
+  final public var variables: AWSAppSync.GraphQLMap? {
+    get
+  }
+  public struct Data : AWSAppSync.GraphQLSelectionSet {
+    public static let possibleTypes: [Swift.String]
+    public static let selections: [AWSAppSync.GraphQLSelection]
+    public var snapshot: AWSAppSync.Snapshot
+    public init(snapshot: AWSAppSync.Snapshot)
+    public init(listMobilogySpConfigs: MobilogySDK.ListMobilogySpConfigsQuery.Data.ListMobilogySpConfig? = nil)
+    public var listMobilogySpConfigs: MobilogySDK.ListMobilogySpConfigsQuery.Data.ListMobilogySpConfig? {
+      get
+      set
+    }
+    public struct ListMobilogySpConfig : AWSAppSync.GraphQLSelectionSet {
+      public static let possibleTypes: [Swift.String]
+      public static let selections: [AWSAppSync.GraphQLSelection]
+      public var snapshot: AWSAppSync.Snapshot
+      public init(snapshot: AWSAppSync.Snapshot)
+      public init(items: [MobilogySDK.ListMobilogySpConfigsQuery.Data.ListMobilogySpConfig.Item?]? = nil, nextToken: Swift.String? = nil)
+      public var __typename: Swift.String {
+        get
+        set
+      }
+      public var items: [MobilogySDK.ListMobilogySpConfigsQuery.Data.ListMobilogySpConfig.Item?]? {
+        get
+        set
+      }
+      public var nextToken: Swift.String? {
+        get
+        set
+      }
+      public struct Item : AWSAppSync.GraphQLSelectionSet {
+        public static let possibleTypes: [Swift.String]
+        public static let selections: [AWSAppSync.GraphQLSelection]
+        public var snapshot: AWSAppSync.Snapshot
+        public init(snapshot: AWSAppSync.Snapshot)
+        public init(config: Swift.String? = nil, enabled: Swift.Bool? = nil, gsi1Pk: Swift.String? = nil, registeredDate: Swift.String? = nil, spId: Swift.String)
+        public var __typename: Swift.String {
+          get
+          set
+        }
+        public var config: Swift.String? {
+          get
+          set
+        }
+        public var enabled: Swift.Bool? {
+          get
+          set
+        }
+        public var gsi1Pk: Swift.String? {
+          get
+          set
+        }
+        public var registeredDate: Swift.String? {
+          get
+          set
+        }
+        public var spId: Swift.String {
+          get
+          set
+        }
+      }
+    }
+  }
+  @objc deinit
+}
+final public class QueryMobilogySpConfigsBySearchbyUserPoolQuery : AWSAppSync.GraphQLQuery {
+  public static let operationString: Swift.String
+  final public var GSI1PK: Swift.String
+  final public var first: Swift.Int?
+  final public var after: Swift.String?
+  public init(GSI1PK: Swift.String, first: Swift.Int? = nil, after: Swift.String? = nil)
+  final public var variables: AWSAppSync.GraphQLMap? {
+    get
+  }
+  public struct Data : AWSAppSync.GraphQLSelectionSet {
+    public static let possibleTypes: [Swift.String]
+    public static let selections: [AWSAppSync.GraphQLSelection]
+    public var snapshot: AWSAppSync.Snapshot
+    public init(snapshot: AWSAppSync.Snapshot)
+    public init(queryMobilogySpConfigsBySearchbyUserPool: MobilogySDK.QueryMobilogySpConfigsBySearchbyUserPoolQuery.Data.QueryMobilogySpConfigsBySearchbyUserPool? = nil)
+    public var queryMobilogySpConfigsBySearchbyUserPool: MobilogySDK.QueryMobilogySpConfigsBySearchbyUserPoolQuery.Data.QueryMobilogySpConfigsBySearchbyUserPool? {
+      get
+      set
+    }
+    public struct QueryMobilogySpConfigsBySearchbyUserPool : AWSAppSync.GraphQLSelectionSet {
+      public static let possibleTypes: [Swift.String]
+      public static let selections: [AWSAppSync.GraphQLSelection]
+      public var snapshot: AWSAppSync.Snapshot
+      public init(snapshot: AWSAppSync.Snapshot)
+      public init(items: [MobilogySDK.QueryMobilogySpConfigsBySearchbyUserPoolQuery.Data.QueryMobilogySpConfigsBySearchbyUserPool.Item?]? = nil, nextToken: Swift.String? = nil)
+      public var __typename: Swift.String {
+        get
+        set
+      }
+      public var items: [MobilogySDK.QueryMobilogySpConfigsBySearchbyUserPoolQuery.Data.QueryMobilogySpConfigsBySearchbyUserPool.Item?]? {
+        get
+        set
+      }
+      public var nextToken: Swift.String? {
+        get
+        set
+      }
+      public struct Item : AWSAppSync.GraphQLSelectionSet {
+        public static let possibleTypes: [Swift.String]
+        public static let selections: [AWSAppSync.GraphQLSelection]
+        public var snapshot: AWSAppSync.Snapshot
+        public init(snapshot: AWSAppSync.Snapshot)
+        public init(config: Swift.String? = nil, enabled: Swift.Bool? = nil, gsi1Pk: Swift.String? = nil, registeredDate: Swift.String? = nil, spId: Swift.String)
+        public var __typename: Swift.String {
+          get
+          set
+        }
+        public var config: Swift.String? {
+          get
+          set
+        }
+        public var enabled: Swift.Bool? {
+          get
+          set
+        }
+        public var gsi1Pk: Swift.String? {
+          get
+          set
+        }
+        public var registeredDate: Swift.String? {
+          get
+          set
+        }
+        public var spId: Swift.String {
+          get
+          set
+        }
+      }
+    }
+  }
+  @objc deinit
+}
+final public class OnCreateMobilogyUsersSubscription : AWSAppSync.GraphQLSubscription {
+  public static let operationString: Swift.String
+  final public var GSI1PK: Swift.String?
+  final public var Metadata: Swift.String?
+  final public var UserId: Swift.String?
+  public init(GSI1PK: Swift.String? = nil, Metadata: Swift.String? = nil, UserId: Swift.String? = nil)
+  final public var variables: AWSAppSync.GraphQLMap? {
+    get
+  }
+  public struct Data : AWSAppSync.GraphQLSelectionSet {
+    public static let possibleTypes: [Swift.String]
+    public static let selections: [AWSAppSync.GraphQLSelection]
+    public var snapshot: AWSAppSync.Snapshot
+    public init(snapshot: AWSAppSync.Snapshot)
+    public init(onCreateMobilogyUsers: MobilogySDK.OnCreateMobilogyUsersSubscription.Data.OnCreateMobilogyUser? = nil)
+    public var onCreateMobilogyUsers: MobilogySDK.OnCreateMobilogyUsersSubscription.Data.OnCreateMobilogyUser? {
+      get
+      set
+    }
+    public struct OnCreateMobilogyUser : AWSAppSync.GraphQLSelectionSet {
+      public static let possibleTypes: [Swift.String]
+      public static let selections: [AWSAppSync.GraphQLSelection]
+      public var snapshot: AWSAppSync.Snapshot
+      public init(snapshot: AWSAppSync.Snapshot)
+      public init(deviceId: Swift.String? = nil, email: Swift.String? = nil, enabled: Swift.Bool? = nil, gsi1Pk: Swift.String? = nil, metadata: Swift.String, os: Swift.String? = nil, registeredDate: Swift.String? = nil, userId: Swift.String)
+      public var __typename: Swift.String {
+        get
+        set
+      }
+      public var deviceId: Swift.String? {
+        get
+        set
+      }
+      public var email: Swift.String? {
+        get
+        set
+      }
+      public var enabled: Swift.Bool? {
+        get
+        set
+      }
+      public var gsi1Pk: Swift.String? {
+        get
+        set
+      }
+      public var metadata: Swift.String {
+        get
+        set
+      }
+      public var os: Swift.String? {
+        get
+        set
+      }
+      public var registeredDate: Swift.String? {
+        get
+        set
+      }
+      public var userId: Swift.String {
+        get
+        set
+      }
+    }
+  }
+  @objc deinit
+}
+final public class OnDeleteMobilogyUsersSubscription : AWSAppSync.GraphQLSubscription {
+  public static let operationString: Swift.String
+  final public var GSI1PK: Swift.String?
+  final public var Metadata: Swift.String?
+  final public var UserId: Swift.String?
+  public init(GSI1PK: Swift.String? = nil, Metadata: Swift.String? = nil, UserId: Swift.String? = nil)
+  final public var variables: AWSAppSync.GraphQLMap? {
+    get
+  }
+  public struct Data : AWSAppSync.GraphQLSelectionSet {
+    public static let possibleTypes: [Swift.String]
+    public static let selections: [AWSAppSync.GraphQLSelection]
+    public var snapshot: AWSAppSync.Snapshot
+    public init(snapshot: AWSAppSync.Snapshot)
+    public init(onDeleteMobilogyUsers: MobilogySDK.OnDeleteMobilogyUsersSubscription.Data.OnDeleteMobilogyUser? = nil)
+    public var onDeleteMobilogyUsers: MobilogySDK.OnDeleteMobilogyUsersSubscription.Data.OnDeleteMobilogyUser? {
+      get
+      set
+    }
+    public struct OnDeleteMobilogyUser : AWSAppSync.GraphQLSelectionSet {
+      public static let possibleTypes: [Swift.String]
+      public static let selections: [AWSAppSync.GraphQLSelection]
+      public var snapshot: AWSAppSync.Snapshot
+      public init(snapshot: AWSAppSync.Snapshot)
+      public init(deviceId: Swift.String? = nil, email: Swift.String? = nil, enabled: Swift.Bool? = nil, gsi1Pk: Swift.String? = nil, metadata: Swift.String, os: Swift.String? = nil, registeredDate: Swift.String? = nil, userId: Swift.String)
+      public var __typename: Swift.String {
+        get
+        set
+      }
+      public var deviceId: Swift.String? {
+        get
+        set
+      }
+      public var email: Swift.String? {
+        get
+        set
+      }
+      public var enabled: Swift.Bool? {
+        get
+        set
+      }
+      public var gsi1Pk: Swift.String? {
+        get
+        set
+      }
+      public var metadata: Swift.String {
+        get
+        set
+      }
+      public var os: Swift.String? {
+        get
+        set
+      }
+      public var registeredDate: Swift.String? {
+        get
+        set
+      }
+      public var userId: Swift.String {
+        get
+        set
+      }
+    }
+  }
+  @objc deinit
+}
+final public class OnUpdateMobilogyUsersSubscription : AWSAppSync.GraphQLSubscription {
+  public static let operationString: Swift.String
+  final public var GSI1PK: Swift.String?
+  final public var Metadata: Swift.String?
+  final public var UserId: Swift.String?
+  public init(GSI1PK: Swift.String? = nil, Metadata: Swift.String? = nil, UserId: Swift.String? = nil)
+  final public var variables: AWSAppSync.GraphQLMap? {
+    get
+  }
+  public struct Data : AWSAppSync.GraphQLSelectionSet {
+    public static let possibleTypes: [Swift.String]
+    public static let selections: [AWSAppSync.GraphQLSelection]
+    public var snapshot: AWSAppSync.Snapshot
+    public init(snapshot: AWSAppSync.Snapshot)
+    public init(onUpdateMobilogyUsers: MobilogySDK.OnUpdateMobilogyUsersSubscription.Data.OnUpdateMobilogyUser? = nil)
+    public var onUpdateMobilogyUsers: MobilogySDK.OnUpdateMobilogyUsersSubscription.Data.OnUpdateMobilogyUser? {
+      get
+      set
+    }
+    public struct OnUpdateMobilogyUser : AWSAppSync.GraphQLSelectionSet {
+      public static let possibleTypes: [Swift.String]
+      public static let selections: [AWSAppSync.GraphQLSelection]
+      public var snapshot: AWSAppSync.Snapshot
+      public init(snapshot: AWSAppSync.Snapshot)
+      public init(deviceId: Swift.String? = nil, email: Swift.String? = nil, enabled: Swift.Bool? = nil, gsi1Pk: Swift.String? = nil, metadata: Swift.String, os: Swift.String? = nil, registeredDate: Swift.String? = nil, userId: Swift.String)
+      public var __typename: Swift.String {
+        get
+        set
+      }
+      public var deviceId: Swift.String? {
+        get
+        set
+      }
+      public var email: Swift.String? {
+        get
+        set
+      }
+      public var enabled: Swift.Bool? {
+        get
+        set
+      }
+      public var gsi1Pk: Swift.String? {
+        get
+        set
+      }
+      public var metadata: Swift.String {
+        get
+        set
+      }
+      public var os: Swift.String? {
+        get
+        set
+      }
+      public var registeredDate: Swift.String? {
+        get
+        set
+      }
+      public var userId: Swift.String {
+        get
+        set
+      }
+    }
+  }
+  @objc deinit
+}
+final public class OnCreateMobilogySpConfigSubscription : AWSAppSync.GraphQLSubscription {
+  public static let operationString: Swift.String
+  final public var SPId: Swift.String?
+  final public var GSI1PK: Swift.String?
+  final public var GSI2PK: Swift.String?
+  public init(SPId: Swift.String? = nil, GSI1PK: Swift.String? = nil, GSI2PK: Swift.String? = nil)
+  final public var variables: AWSAppSync.GraphQLMap? {
+    get
+  }
+  public struct Data : AWSAppSync.GraphQLSelectionSet {
+    public static let possibleTypes: [Swift.String]
+    public static let selections: [AWSAppSync.GraphQLSelection]
+    public var snapshot: AWSAppSync.Snapshot
+    public init(snapshot: AWSAppSync.Snapshot)
+    public init(onCreateMobilogySpConfig: MobilogySDK.OnCreateMobilogySpConfigSubscription.Data.OnCreateMobilogySpConfig? = nil)
+    public var onCreateMobilogySpConfig: MobilogySDK.OnCreateMobilogySpConfigSubscription.Data.OnCreateMobilogySpConfig? {
+      get
+      set
+    }
+    public struct OnCreateMobilogySpConfig : AWSAppSync.GraphQLSelectionSet {
+      public static let possibleTypes: [Swift.String]
+      public static let selections: [AWSAppSync.GraphQLSelection]
+      public var snapshot: AWSAppSync.Snapshot
+      public init(snapshot: AWSAppSync.Snapshot)
+      public init(config: Swift.String? = nil, enabled: Swift.Bool? = nil, gsi1Pk: Swift.String? = nil, registeredDate: Swift.String? = nil, spId: Swift.String)
+      public var __typename: Swift.String {
+        get
+        set
+      }
+      public var config: Swift.String? {
+        get
+        set
+      }
+      public var enabled: Swift.Bool? {
+        get
+        set
+      }
+      public var gsi1Pk: Swift.String? {
+        get
+        set
+      }
+      public var registeredDate: Swift.String? {
+        get
+        set
+      }
+      public var spId: Swift.String {
+        get
+        set
+      }
+    }
+  }
+  @objc deinit
+}
+final public class OnUpdateMobilogySpConfigSubscription : AWSAppSync.GraphQLSubscription {
+  public static let operationString: Swift.String
+  final public var SPId: Swift.String?
+  final public var GSI1PK: Swift.String?
+  final public var GSI2PK: Swift.String?
+  public init(SPId: Swift.String? = nil, GSI1PK: Swift.String? = nil, GSI2PK: Swift.String? = nil)
+  final public var variables: AWSAppSync.GraphQLMap? {
+    get
+  }
+  public struct Data : AWSAppSync.GraphQLSelectionSet {
+    public static let possibleTypes: [Swift.String]
+    public static let selections: [AWSAppSync.GraphQLSelection]
+    public var snapshot: AWSAppSync.Snapshot
+    public init(snapshot: AWSAppSync.Snapshot)
+    public init(onUpdateMobilogySpConfig: MobilogySDK.OnUpdateMobilogySpConfigSubscription.Data.OnUpdateMobilogySpConfig? = nil)
+    public var onUpdateMobilogySpConfig: MobilogySDK.OnUpdateMobilogySpConfigSubscription.Data.OnUpdateMobilogySpConfig? {
+      get
+      set
+    }
+    public struct OnUpdateMobilogySpConfig : AWSAppSync.GraphQLSelectionSet {
+      public static let possibleTypes: [Swift.String]
+      public static let selections: [AWSAppSync.GraphQLSelection]
+      public var snapshot: AWSAppSync.Snapshot
+      public init(snapshot: AWSAppSync.Snapshot)
+      public init(config: Swift.String? = nil, enabled: Swift.Bool? = nil, gsi1Pk: Swift.String? = nil, registeredDate: Swift.String? = nil, spId: Swift.String)
+      public var __typename: Swift.String {
+        get
+        set
+      }
+      public var config: Swift.String? {
+        get
+        set
+      }
+      public var enabled: Swift.Bool? {
+        get
+        set
+      }
+      public var gsi1Pk: Swift.String? {
+        get
+        set
+      }
+      public var registeredDate: Swift.String? {
+        get
+        set
+      }
+      public var spId: Swift.String {
+        get
+        set
+      }
+    }
+  }
+  @objc deinit
+}
+final public class OnDeleteMobilogySpConfigSubscription : AWSAppSync.GraphQLSubscription {
+  public static let operationString: Swift.String
+  final public var SPId: Swift.String?
+  final public var GSI1PK: Swift.String?
+  final public var GSI2PK: Swift.String?
+  public init(SPId: Swift.String? = nil, GSI1PK: Swift.String? = nil, GSI2PK: Swift.String? = nil)
+  final public var variables: AWSAppSync.GraphQLMap? {
+    get
+  }
+  public struct Data : AWSAppSync.GraphQLSelectionSet {
+    public static let possibleTypes: [Swift.String]
+    public static let selections: [AWSAppSync.GraphQLSelection]
+    public var snapshot: AWSAppSync.Snapshot
+    public init(snapshot: AWSAppSync.Snapshot)
+    public init(onDeleteMobilogySpConfig: MobilogySDK.OnDeleteMobilogySpConfigSubscription.Data.OnDeleteMobilogySpConfig? = nil)
+    public var onDeleteMobilogySpConfig: MobilogySDK.OnDeleteMobilogySpConfigSubscription.Data.OnDeleteMobilogySpConfig? {
+      get
+      set
+    }
+    public struct OnDeleteMobilogySpConfig : AWSAppSync.GraphQLSelectionSet {
+      public static let possibleTypes: [Swift.String]
+      public static let selections: [AWSAppSync.GraphQLSelection]
+      public var snapshot: AWSAppSync.Snapshot
+      public init(snapshot: AWSAppSync.Snapshot)
+      public init(config: Swift.String? = nil, enabled: Swift.Bool? = nil, gsi1Pk: Swift.String? = nil, registeredDate: Swift.String? = nil, spId: Swift.String)
+      public var __typename: Swift.String {
+        get
+        set
+      }
+      public var config: Swift.String? {
+        get
+        set
+      }
+      public var enabled: Swift.Bool? {
+        get
+        set
+      }
+      public var gsi1Pk: Swift.String? {
+        get
+        set
+      }
+      public var registeredDate: Swift.String? {
+        get
+        set
+      }
+      public var spId: Swift.String {
+        get
+        set
+      }
+    }
+  }
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers public class CategorizedStatistics {
+  public var images: MobilogySDK.Statistics
+  public var videos: MobilogySDK.Statistics
+  public var contacts: MobilogySDK.ContactsStatistics
+  public var documents: MobilogySDK.Statistics
+  public var calendars: MobilogySDK.CalendarsStatistics
+  public var totalNoOfFiles: Swift.Int {
+    get
+  }
+  public var lastModifiedDate: Swift.String? {
+    get
+  }
+  public var totalNoOfSuccessFileCount: Swift.Int {
+    get
+  }
+  public var totalNoOfFailedFileCount: Swift.Int {
+    get
+  }
+  public var totalFileSizeProcessed: Swift.UInt64 {
+    get
+  }
+  public var errorFiles: [Swift.String] {
+    get
+  }
+  public var status: MobilogySDK.OperationStatus {
+    get
+  }
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @objc(SynchronizedFileMO) public class SynchronizedFileMO : CoreData.NSManagedObject {
+  @objc override dynamic public init(entity: CoreData.NSEntityDescription, insertInto context: CoreData.NSManagedObjectContext?)
+  @objc deinit
+}
+public func track(_ message: Swift.String, file: Swift.String = #file, function: Swift.String = #function, line: Swift.Int = #line)
+public protocol MobilogySDKDelegate : AnyObject {
+  func success(mode: MobilogySDK.ModeOfOperation)
+  func failure(error: MobilogySDK.MobilogySDKErrorCode)
+  func wifiLost()
+  func wifiAvailable()
+}
+extension MobilogySDK.MobilogySDKDelegate {
+  public func success(mode: MobilogySDK.ModeOfOperation)
+  public func failure(error: MobilogySDK.MobilogySDKErrorCode)
+  public func wifiLost()
+  public func wifiAvailable()
+}
+@_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers public class CalendarsStatistics : MobilogySDK.Statistics {
+  public var totalNoOfEvents: Swift.Int
+  public var totalNoOfSuccessEventsCount: Swift.Int
+  public var totalNoOfFailedEventsCount: Swift.Int
+  @objc deinit
+}
+extension MobilogySDK.SynchronizedFileMO {
+  @nonobjc public class func fetchRequest() -> CoreData.NSFetchRequest<MobilogySDK.SynchronizedFileMO>
+  @objc @NSManaged dynamic public var key: Swift.String? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var lastModified: Foundation.Date? {
+    @objc get
+    @objc set
+  }
+}
+extension MobilogySDK.SynchronizedFileMO : Swift.Identifiable {
+  public typealias ID = Swift.ObjectIdentifier
+}
+public protocol SSEGenerator {
+  func generateKey(passphrase: Swift.String, completion: @escaping (Swift.String?, Swift.Error?) -> ())
+}
+public typealias AuthHandler = (Swift.Bool, Swift.Error?) -> Swift.Void
+public typealias AuthSessionHandler = (Amplify.AuthSession?, Swift.Error?) -> Swift.Void
+@_hasMissingDesignatedInitializers public class MOAuthenticationService : AWSAppSync.AWSCognitoUserPoolsAuthProvider {
+  public func isSignedIn(completion: @escaping MobilogySDK.AuthHandler)
+  public func signInWithGoogle(window: UIKit.UIWindow, _ completion: @escaping MobilogySDK.AuthHandler)
+  public func signOut(_ completion: @escaping MobilogySDK.AuthHandler)
+  public func signInWithApple(window: UIKit.UIWindow, _ completion: @escaping MobilogySDK.AuthHandler)
+  public func getLatestAuthToken() -> Swift.String
+  @objc deinit
+}
+extension MobilogySDK.AuthProvider : Swift.Equatable {}
+extension MobilogySDK.AuthProvider : Swift.Hashable {}
+extension MobilogySDK.OperationStatus : Swift.Equatable {}
+extension MobilogySDK.OperationStatus : Swift.Hashable {}
+extension MobilogySDK.OperationStatus : Swift.RawRepresentable {}
+extension MobilogySDK.AnalyticsEventType : Swift.Equatable {}
+extension MobilogySDK.AnalyticsEventType : Swift.Hashable {}
+extension MobilogySDK.AnalyticsEventType : Swift.RawRepresentable {}
+extension MobilogySDK.AnalyticsParameter : Swift.Equatable {}
+extension MobilogySDK.AnalyticsParameter : Swift.Hashable {}
+extension MobilogySDK.AnalyticsParameter : Swift.RawRepresentable {}
